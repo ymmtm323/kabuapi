@@ -1,0 +1,12 @@
+[Unit]
+Description=kabuapi service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/kabuapi
+Restart=always
+User=nobody
+Group=nogroup
+
+[Install]
+WantedBy=multi-user.target
