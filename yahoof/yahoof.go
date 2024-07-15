@@ -8,7 +8,8 @@ import (
 )
 
 var (
-	ErrorNotFound = errors.New("not found")
+	ErrorNotFound           = errors.New("not found")
+	ErrorServiceUnavailable = errors.New("service unavailable")
 )
 
 type QuoteTypeResponse struct {
@@ -38,6 +39,8 @@ func GetQuoteType(id string) (QuoteTypeResponse, error) {
 	}
 	if resp.StatusCode == http.StatusNotFound {
 		return QuoteTypeResponse{}, ErrorNotFound
+	} else if resp.StatusCode == http.StatusServiceUnavailable {
+		return QuoteTypeResponse{}, ErrorServiceUnavailable
 	}
 	buf, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -123,6 +126,8 @@ func GetChart(id string) (ChartResponse, error) {
 	}
 	if resp.StatusCode == http.StatusNotFound {
 		return ChartResponse{}, ErrorNotFound
+	} else if resp.StatusCode == http.StatusServiceUnavailable {
+		return ChartResponse{}, ErrorServiceUnavailable
 	}
 	buf, err := io.ReadAll(resp.Body)
 	if err != nil {
