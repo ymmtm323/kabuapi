@@ -12,6 +12,7 @@ import (
 
 var (
 	ErrorNotFound           = errors.New("not found")
+	ErrorAcquisitionFailed  = errors.New("acquisition failed")
 	ErrorServiceUnavailable = errors.New("service unavailable")
 )
 
@@ -54,7 +55,7 @@ func GmtDividend(code string) (float64, error) {
 	// 現在の年度を探す
 	year := getFiscalYear()
 	for i := len(lines) - 1; i >= 0; i-- {
-		if strings.Contains(lines[i], fmt.Sprintf("%s/04", year)) {
+		if strings.Contains(lines[i], fmt.Sprintf("%s/", year)) {
 			s := strings.Split(lines[i], ",")
 			if len(s) < 2 {
 				return 0, errors.New("invalid format")
@@ -67,7 +68,7 @@ func GmtDividend(code string) (float64, error) {
 		}
 	}
 
-	return 0, errors.New("not found")
+	return 0, ErrorAcquisitionFailed
 }
 
 // 年度を取得する
